@@ -1,0 +1,49 @@
+Initial setup:
+
+1. Create repo in Github (Can add README and license in this step vs. 6 & 7)
+
+Following steps from URL: https://modelcontextprotocol.io/docs/2026-07-28/develop/build-server#typescript
+
+2. Initialize mcp server in project file:
+    cd violet-fhir
+    npm init -y
+    npm install @modelcontextprotocol/server zod
+    npm install -D @types/node typescript
+    mkdir src
+    touch src/index.ts
+
+3. Update package.json module and build script:
+    {
+    "type": "module",
+    "bin": {
+        "violet-fhir": "./build/index.js"
+    },
+    "scripts": {
+        "build": "tsc && chmod 755 build/index.js"
+    },
+    "files": ["build"]
+    }
+
+4. Add tsconfig.json to root:
+    {
+    "compilerOptions": {
+        "target": "ES2022",
+        "module": "Node16",
+        "moduleResolution": "Node16",
+        "types": ["node"],
+        "outDir": "./build",
+        "rootDir": "./src",
+        "strict": true,
+        "esModuleInterop": true,
+        "skipLibCheck": true,
+        "forceConsistentCasingInFileNames": true
+    },
+    "include": ["src/**/*"],
+    "exclude": ["node_modules"]
+    }
+
+5. Add .gitignore
+
+6. Add README.md
+
+7. Add license: https://docs.github.com/en/communities/setting-up-your-project-for-healthy-contributions/adding-a-license-to-a-repository

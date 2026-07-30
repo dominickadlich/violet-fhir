@@ -1,0 +1,37 @@
+{
+  "name": "violet-fhir",
+  "version": "1.0.0",
+  "description": "FHIR MCP substrate and citation-grounded guideline retrieval",
+  "type": "module",
+  "main": "./build/index.js",
+  "bin": {
+    "violet-fhir": "./build/index.js"
+  },
+  "files": ["build"],
+  "scripts": {
+    "build": "tsc && chmod 755 build/index.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/dominickadlich/violet-fhir.git"
+  },
+  "keywords": ["mcp", "fhir", "smart-on-fhir", "healthcare"],
+  "author": "Dominick Adlich",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/dominickadlich/violet-fhir/issues"
+  },
+  "homepage": "https://github.com/dominickadlich/violet-fhir#readme",
+  "dependencies": {
+    "@modelcontextprotocol/server": "^2.0.0",
+    "zod": "^4.4.3"
+  },
+  "devDependencies": {
+    "@types/node": "^26.1.2",
+    "typescript": "^7.0.2"
+  },
+  "engines": {
+    "node": ">=20"
+  }
+}
