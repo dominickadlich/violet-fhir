@@ -1,0 +1,113 @@
+1. npm i dotenv
+
+2. Create .env
+
+3. Choose endpoint - https://hapi.fhir.org/baseR4
+
+-------------------------------------------------------
+Return total number of medications based on relevance
+-------------------------------------------------------
+curl -s \
+  -H 'Accept: application/fhir+json' \
+  -H 'Cache-Control: no-store' \
+  'https://hapi.fhir.org/baseR4/MedicationRequest?_count=5&_total=accurate' \
+  | jq '{total, entries: (.entry | length), links: [.link[]?.relation]}'
+
+-------------------------------------------------------
+Result
+-------------------------------------------------------
+{
+    "total": 29381,
+    "entries": 0,
+    "links": [
+        "self"
+    ]
+}
+
+
+-------------------------------------------------------
+Return total number of medications based on relevance
+-------------------------------------------------------
+curl -s \
+-H 'Accept: application/fhir+json' \
+-H 'Cache-Control: no-store' \
+'https://hapi.fhir.org/baseR4/MedicationRequest?_count=50&_sort=-_lastUpdated' \
+| jq -r '.entry[]?.resource.subject.reference' | sort | uniq -c | sort -rn | head
+
+-------------------------------------------------------
+Result
+-------------------------------------------------------
+   5 Patient/137237825
+   5 Patient/137237701
+   5 Patient/137237641
+   5 Patient/137237570
+   3 Patient/preauth-demo-rajesh
+   3 Patient/137230016
+   3 Patient/137225594
+   2 Patient/preauth-demo-maria
+   2 Patient/preauth-demo-david
+   2 Patient/alex-chen
+
+-------------------------------------------------------
+Number of medication orders for speceific PT
+-------------------------------------------------------
+PT=137237825
+curl -s -H 'Accept: application/fhir+json' -H 'Cache-Control: no-store' \
+  "https://hapi.fhir.org/baseR4/MedicationRequest?patient=$PT&_count=50&_total=accurate" \
+  | jq '{total, entries: (.entry | length)}'
+
+-------------------------------------------------------
+Result
+-------------------------------------------------------
+{
+  "total": 5,
+  "entries": 5
+}
+
+
+-------------------------------------------------------
+Return MedicationRequest for a single resource
+-------------------------------------------------------
+curl -s -H 'Accept: application/fhir+json' \
+  'https://hapi.fhir.org/baseR4/MedicationRequest?_count=1&_sort=-_lastUpdated' \
+  | jq '.entry[0].resource
+        | {id, status, intent, medicationCodeableConcept, medicationReference, contained, subject}'
+
+-------------------------------------------------------
+Result
+-------------------------------------------------------
+{
+  "id": "137240485",
+  "status": "active",
+  "intent": "order",
+  "medicationCodeableConcept": {
+    "coding": [
+      {
+        "system": "http://www.nlm.nih.gov/research/umls/rxnorm",
+        "code": "860975",
+        "display": "Metformin 500 MG Oral Tablet"
+      }
+    ],
+    "text": "Metformin 500 MG Tablet"
+  },
+  "medicationReference": null,
+  "contained": null,
+  "subject": {
+    "reference": "Patient/cds-emrz228-latitude-patient-1785323767514-379591"
+  }
+}
+
+4. Patients ID's with meds:
+    5 Patient/137237825
+    5 Patient/137237701
+    5 Patient/137237641
+    5 Patient/137237570
+    3 Patient/preauth-demo-rajesh
+    3 Patient/137230016
+    3 Patient/137225594
+    2 Patient/preauth-demo-maria
+    2 Patient/preauth-demo-david
+    2 Patient/alex-chen
+
+
+5. npm install --save @types/fhir (Install fhir types library)
