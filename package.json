@@ -32,11 +32,12 @@
   "homepage": "https://github.com/dominickadlich/violet-fhir#readme",
   "dependencies": {
     "@modelcontextprotocol/server": "^2.0.0",
-    "@types/fhir": "^0.0.44",
     "dotenv": "^17.4.2",
+    "fhirclient": "^2.6.3",
     "zod": "^4.4.3"
   },
   "devDependencies": {
+    "@types/fhir": "^0.0.44",
     "@types/node": "^26.1.2",
     "typescript": "^7.0.2"
   },
