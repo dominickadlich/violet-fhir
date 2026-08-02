@@ -1,15 +1,20 @@
 import "fhir/r4.js";
 
 type MedicationRequest = fhir4.MedicationRequest;
-type Bundle<T> = fhir4.Bundle<T>;
+type Bundle<T extends fhir4.Resource> = fhir4.Bundle<T>;
+type OperationOutcome = fhir4.OperationOutcome;
 
-
+type FetchResult =
+  | { kind: 'ok'; bundle: Bundle<MedicationRequest> }
+  | { kind: 'empty'; patientId: string }
+  | { kind: 'unavailable'; status?: number; detail: string }
+  | { kind: 'bad_request'; status: number; detail: string };
 
 export async function fetchMedications({
     patientId
 }: {
     patientId: string,
-}): Promise <Bundle<MedicationRequest> | null> {
+}): Promise <FetchResult> {
     const USER_AGENT = 'fetch_medications/1.0'
     const url = new URL('https://hapi.fhir.org/baseR4/MedicationRequest')
     url.searchParams.set('patient', patientId)
@@ -22,11 +27,27 @@ export async function fetchMedications({
     try {
         const response = await fetch(url, { headers })
         if (!response.ok) {
-            throw new Error(`HTTP error! Status: ${response.status}`)
+            const outcome: OperationOutcome = await response.json()
+            if (response.status >= 500) {
+                if (outcome.resourceType === "OperationOutcome") {
+                    return { kind: 'unavailable', status: response.status, detail: outcome.issue?.[0]?.diagnostics  ?? 'Server error'};
+                }
+                return { kind: 'unavailable', status: response.status, detail: 'Server error'};
+            }
+            if (outcome.resourceType === "OperationOutcome") {
+                return { kind: 'bad_request', status: response.status, detail: outcome.issue?.[0]?.diagnostics  ?? 'Bad Request'};
+            }
+            return { kind: 'bad_request', status: response.status, detail: 'Bad Request'};
         }
-        return await response.json();
+
+        const bundle: Bundle<MedicationRequest> = await response.json();
+
+        if (!bundle.entry?.length) {
+            return { kind: 'empty', patientId };
+        }
+
+        return { kind: 'ok', bundle };
     } catch (error) {
-        console.error(`Error fetching medications for ${patientId}`)
-        return null;
+        return { kind: 'unavailable', detail: error instanceof Error ? error.message : 'Error'};
     }
 }
