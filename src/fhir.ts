@@ -34,10 +34,21 @@ export async function fetchMedications({
                 }
                 return { kind: 'unavailable', status: response.status, detail: 'Server error'};
             }
+            
             if (outcome.resourceType === "OperationOutcome") {
                 return { kind: 'bad_request', status: response.status, detail: outcome.issue?.[0]?.diagnostics  ?? 'Bad Request'};
             }
             return { kind: 'bad_request', status: response.status, detail: 'Bad Request'};
+        }
+
+        
+        if (!response.ok) {
+            const outcome: OperationOutcome = await response.json()
+            const diagnostics = outcome.resourceType === "OperationOutcome" ? outcome.issue?.[0]?.diagnostics : null
+            if (response.status >= 500) {
+                    return { kind: 'unavailable', status: response.status, detail: diagnostics  ?? 'Server error'};
+            }
+            return { kind: 'bad_request', status: response.status, detail: diagnostics  ?? 'Bad Request'};
         }
 
         const bundle: Bundle<MedicationRequest> = await response.json();
