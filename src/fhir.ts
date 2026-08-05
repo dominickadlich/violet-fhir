@@ -4,11 +4,33 @@ type MedicationRequest = fhir4.MedicationRequest;
 type Bundle<T extends fhir4.Resource> = fhir4.Bundle<T>;
 type OperationOutcome = fhir4.OperationOutcome;
 
+const RXNORM_SYSTEM = 'http://www.nlm.nih.gov/research/umls/rxnorm';
+
 type FetchResult =
   | { kind: 'ok'; bundle: Bundle<MedicationRequest> }
   | { kind: 'empty'; patientId: string }
   | { kind: 'unavailable'; status?: number; detail: string }
   | { kind: 'bad_request'; status: number; detail: string };
+
+  export function resolveMedicationName(request: MedicationRequest) {
+
+    if (request.medicationCodeableConcept) {
+        const rxnormCoding = request.medicationCodeableConcept?.coding?.find((c) => c.system === RXNORM_SYSTEM)        
+        if (rxnormCoding) {            
+            return rxnormCoding.display   
+        }
+
+        const displayCoding = request.medicationCodeableConcept?.coding?.find((c) => c.display)
+        if (displayCoding) {
+            return displayCoding.display
+        }
+        return request.medicationCodeableConcept?.text
+    } 
+    // else if (request.medicationReference?.reference?.startsWith('#')) {
+    //     if (request.medicationReference)
+    // }
+    return 'Unable to determine drug name'
+  }
 
 export async function fetchMedications({
     patientId

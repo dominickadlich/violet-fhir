@@ -26,7 +26,7 @@ Result
 
 
 -------------------------------------------------------
-Return total number of medications based on relevance
+Find patients with multiple recent medication orders
 -------------------------------------------------------
 curl -s \
 -H 'Accept: application/fhir+json' \

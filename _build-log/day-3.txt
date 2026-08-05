@@ -1,0 +1,76 @@
+fhir.ts MedicationRequest References:
+
+----------------------------------------------
+Reference 1
+----------------------------------------------
+{
+  "resourceType": "MedicationRequest",
+  "id": "med-req-001",
+  "status": "active",
+  "intent": "order",
+  "authoredOn": "2026-06-15",
+  "requester": { "reference": "Practitioner/dr-chen" },
+
+  "medicationCodeableConcept": {
+    "coding": [
+      { "system": "http://hl7.org/fhir/sid/ndc", "code": "00069-0420-30" },
+      { "system": "http://www.nlm.nih.gov/research/umls/rxnorm", "code": "860975", "display": "Metformin 500 MG Oral Tablet" }
+    ],
+    "text": "Metformin 500mg tabs"
+  },
+
+  "dosageInstruction": [
+    {
+      "text": "Take 1 tablet by mouth twice daily with meals",
+      "route": { "coding": [{ "system": "http://snomed.info/sct", "code": "26643006", "display": "Oral route" }] },
+      "doseAndRate": [{ "doseQuantity": { "value": 500, "unit": "mg" } }]
+    }
+  ]
+}
+
+
+
+----------------------------------------------
+Reference 2 
+----------------------------------------------
+{
+  "resourceType": "MedicationRequest",
+  "id": "med-req-002",
+  "status": "active",
+  "intent": "order",
+  "authoredOn": "2026-07-01",
+
+  "medicationReference": { "reference": "#med-inline" },
+  "contained": [
+    {
+      "resourceType": "Medication",
+      "id": "med-inline",
+      "code": {
+        "coding": [
+          { "system": "http://www.nlm.nih.gov/research/umls/rxnorm", "code": "197361", "display": "Lisinopril 10 MG Oral Tablet" }
+        ]
+      }
+    }
+  ],
+
+  "dosageInstruction": [
+    { "text": "Take 1 tablet by mouth once daily" }
+  ]
+}
+
+
+----------------------------------------------
+Reference 3
+----------------------------------------------
+{
+  "resourceType": "MedicationRequest",
+  "id": "med-req-003",
+  "status": "active",
+  "intent": "order",
+  "authoredOn": "2026-05-20",
+
+  "medicationReference": {
+    "reference": "Medication/med-999",
+    "display": "Atorvastatin 20 MG Oral Tablet"
+  }
+}
