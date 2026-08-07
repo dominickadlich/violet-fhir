@@ -12,25 +12,42 @@ type FetchResult =
   | { kind: 'unavailable'; status?: number; detail: string }
   | { kind: 'bad_request'; status: number; detail: string };
 
-  export function resolveMedicationName(request: MedicationRequest) {
+
+function bestDisplayName(concept: fhir4.CodeableConcept | undefined): string | undefined {
+
+    const rxnormCoding = concept?.coding?.find((c) => c.system === RXNORM_SYSTEM)        
+    if (rxnormCoding) {            
+        return rxnormCoding.display   
+    }
+
+    const displayCoding = concept?.coding?.find((c) => c.display)
+    if (displayCoding) {
+        return displayCoding.display
+    }
+    return concept?.text
+}
+
+export function resolveMedicationName(request: MedicationRequest): string {
 
     if (request.medicationCodeableConcept) {
-        const rxnormCoding = request.medicationCodeableConcept?.coding?.find((c) => c.system === RXNORM_SYSTEM)        
-        if (rxnormCoding) {            
-            return rxnormCoding.display   
-        }
+        return bestDisplayName(request.medicationCodeableConcept) ?? 'Unable to determine drug name'
+    }
 
-        const displayCoding = request.medicationCodeableConcept?.coding?.find((c) => c.display)
-        if (displayCoding) {
-            return displayCoding.display
+    const medRef = request.medicationReference
+    if (medRef) {
+        if (medRef?.reference?.startsWith('#')) {
+            const refId = medRef.reference.slice(1)
+            const containedMed = request.contained?.find((i) => i.id === refId)
+            if (containedMed) {
+                if (containedMed.resourceType === 'Medication') {
+                    return bestDisplayName((containedMed as fhir4.Medication).code) ?? 'Unable to determine drug name'
+                }
+            } 
         }
-        return request.medicationCodeableConcept?.text
-    } 
-    // else if (request.medicationReference?.reference?.startsWith('#')) {
-    //     if (request.medicationReference)
-    // }
+        return request.medicationReference?.display ?? 'Unable to determine drug name'
+    }
     return 'Unable to determine drug name'
-  }
+}
 
 export async function fetchMedications({
     patientId
@@ -48,21 +65,6 @@ export async function fetchMedications({
 
     try {
         const response = await fetch(url, { headers })
-        if (!response.ok) {
-            const outcome: OperationOutcome = await response.json()
-            if (response.status >= 500) {
-                if (outcome.resourceType === "OperationOutcome") {
-                    return { kind: 'unavailable', status: response.status, detail: outcome.issue?.[0]?.diagnostics  ?? 'Server error'};
-                }
-                return { kind: 'unavailable', status: response.status, detail: 'Server error'};
-            }
-            
-            if (outcome.resourceType === "OperationOutcome") {
-                return { kind: 'bad_request', status: response.status, detail: outcome.issue?.[0]?.diagnostics  ?? 'Bad Request'};
-            }
-            return { kind: 'bad_request', status: response.status, detail: 'Bad Request'};
-        }
-
         
         if (!response.ok) {
             const outcome: OperationOutcome = await response.json()
