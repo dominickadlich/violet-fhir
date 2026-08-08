@@ -49,6 +49,25 @@ export function resolveMedicationName(request: MedicationRequest): string {
     return 'Unable to determine drug name'
 }
 
+export function resolveDosageInstructions(request: MedicationRequest) {
+    if (request.dosageInstruction) {
+        const dose = request.dosageInstruction[0]
+
+        const instructions = dose?.text
+        const route = bestDisplayName(dose.route)
+        const strength = dose?.doseAndRate?.[0]?.doseQuantity?.value ?? 'Unknown strength'
+        const unit = dose?.doseAndRate?.[0]?.doseQuantity?.unit ?? 'Unknown unit'
+        const doseAndRate = `${strength} ${unit}`
+
+        return {
+            Instructions: instructions,
+            Route: route,
+            DoseAndRate: doseAndRate,
+        }
+    }
+   return "Unable to determine dosing and instructions"
+}
+
 export async function fetchMedications({
     patientId
 }: {
