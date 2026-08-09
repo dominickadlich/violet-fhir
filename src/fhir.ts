@@ -1,7 +1,7 @@
 import "fhir/r4.js";
 
 type MedicationRequest = fhir4.MedicationRequest;
-type Bundle<T> = fhir4.Bundle<T>;
+type Bundle<T extends fhir4.Resource> = fhir4.Bundle<T>;
 
 
 
