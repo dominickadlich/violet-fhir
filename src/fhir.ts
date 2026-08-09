@@ -1,4 +1,5 @@
 import "fhir/r4.js";
+import { Medication } from "fhir/r4.js";
 
 type MedicationRequest = fhir4.MedicationRequest;
 type Bundle<T extends fhir4.Resource> = fhir4.Bundle<T>;
@@ -49,23 +50,27 @@ export function resolveMedicationName(request: MedicationRequest): string {
     return 'Unable to determine drug name'
 }
 
-export function resolveDosageInstructions(request: MedicationRequest) {
-    if (request.dosageInstruction) {
-        const dose = request.dosageInstruction[0]
+export function resolveDosageInstructions(request: MedicationRequest): {
+    status: string;
+    authoredOn: string;
+    instructions: string;
+    route: string;
+    doseAndRate: string;
+} {
+    const dose = request.dosageInstruction?.[0]
 
-        const instructions = dose?.text
-        const route = bestDisplayName(dose.route)
-        const strength = dose?.doseAndRate?.[0]?.doseQuantity?.value ?? 'Unknown strength'
-        const unit = dose?.doseAndRate?.[0]?.doseQuantity?.unit ?? 'Unknown unit'
-        const doseAndRate = `${strength} ${unit}`
+    const instructions = dose?.text ?? 'Unknown instructions'
+    const route = bestDisplayName(dose?.route) ?? 'Unknown route'
+    const strength = dose?.doseAndRate?.[0]?.doseQuantity?.value ?? 'Unknown strength'
+    const unit = dose?.doseAndRate?.[0]?.doseQuantity?.unit ?? 'Unknown unit'
 
-        return {
-            Instructions: instructions,
-            Route: route,
-            DoseAndRate: doseAndRate,
-        }
+    return {
+        status: request.status ?? 'unknown',
+        authoredOn: request.authoredOn ?? 'Unknown authored date',
+        instructions: instructions,
+        route: route,
+        doseAndRate: `${strength} ${unit}`,
     }
-   return "Unable to determine dosing and instructions"
 }
 
 export async function fetchMedications({
@@ -105,3 +110,12 @@ export async function fetchMedications({
         return { kind: 'unavailable', detail: error instanceof Error ? error.message : 'Error'};
     }
 }
+
+// export default function normalizeMedications(medList: Medication[]) {
+//     medList.forEach((med) => {
+//         return {
+//             resolveMedicationName(med),
+//             resolveDosageInstructions(med)
+//         }
+//     })
+// }
