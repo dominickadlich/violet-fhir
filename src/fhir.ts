@@ -1,15 +1,39 @@
 import "fhir/r4.js";
 
+
+
+// ---- Types ----
 type MedicationRequest = fhir4.MedicationRequest;
 type Bundle<T extends fhir4.Resource> = fhir4.Bundle<T>;
+type OperationOutcome = fhir4.OperationOutcome;
 
 
+type DosageFields = {
+    status: string,
+    authoredOn: string,
+    instructions: string;
+    route: string;
+    doseAndRate: string;
+}
 
+
+type NormalizedMedication = { name: string } & DosageFields
+
+
+type FetchResult =
+  | { kind: 'ok'; bundle: Bundle<MedicationRequest> }
+  | { kind: 'empty'; patientId: string }
+  | { kind: 'unavailable'; status?: number; detail: string }
+  | { kind: 'bad_request'; status: number; detail: string };
+
+
+  
+// ---- FHIR transport ----
 export async function fetchMedications({
     patientId
 }: {
     patientId: string,
-}): Promise <Bundle<MedicationRequest> | null> {
+}): Promise <FetchResult> {
     const USER_AGENT = 'fetch_medications/1.0'
     const url = new URL('https://hapi.fhir.org/baseR4/MedicationRequest')
     url.searchParams.set('patient', patientId)
@@ -21,12 +45,100 @@ export async function fetchMedications({
 
     try {
         const response = await fetch(url, { headers })
+        
         if (!response.ok) {
-            throw new Error(`HTTP error! Status: ${response.status}`)
+            const outcome: OperationOutcome = await response.json()
+            const diagnostics = outcome.resourceType === "OperationOutcome" ? outcome.issue?.[0]?.diagnostics : null
+            if (response.status >= 500) {
+                    return { kind: 'unavailable', status: response.status, detail: diagnostics  ?? 'Server error'};
+            }
+            return { kind: 'bad_request', status: response.status, detail: diagnostics  ?? 'Bad Request'};
         }
-        return await response.json();
+
+        const bundle: Bundle<MedicationRequest> = await response.json();
+
+        if (!bundle.entry?.length) {
+            return { kind: 'empty', patientId };
+        }
+
+        return { kind: 'ok', bundle };
     } catch (error) {
-        console.error(`Error fetching medications for ${patientId}`)
-        return null;
+        return { kind: 'unavailable', detail: error instanceof Error ? error.message : 'Error'};
+    }
+}
+
+
+
+// ---- Medication name resolution ----
+const RXNORM_SYSTEM = 'http://www.nlm.nih.gov/research/umls/rxnorm';
+
+function bestDisplayName(concept: fhir4.CodeableConcept | undefined): string | undefined {
+
+    const rxnormCoding = concept?.coding?.find((c) => c.system === RXNORM_SYSTEM)        
+    if (rxnormCoding) {            
+        return rxnormCoding.display   
+    }
+
+    const displayCoding = concept?.coding?.find((c) => c.display)
+    if (displayCoding) {
+        return displayCoding.display
+    }
+    return concept?.text
+}
+
+
+
+export function resolveMedicationName(request: MedicationRequest): string {
+
+    if (request.medicationCodeableConcept) {
+        return bestDisplayName(request.medicationCodeableConcept) ?? 'Unable to determine drug name'
+    }
+
+    const medRef = request.medicationReference
+    if (medRef) {
+        if (medRef?.reference?.startsWith('#')) {
+            const refId = medRef.reference.slice(1)
+            const containedMed = request.contained?.find((i) => i.id === refId)
+            if (containedMed) {
+                if (containedMed.resourceType === 'Medication') {
+                    return bestDisplayName((containedMed as fhir4.Medication).code) ?? 'Unable to determine drug name'
+                }
+            } 
+        }
+        return request.medicationReference?.display ?? 'Unable to determine drug name'
+    }
+    return 'Unable to determine drug name'
+}
+
+
+
+// ---- Dosage/status resolution ----
+export function resolveDosageInstructions(request: MedicationRequest): DosageFields {
+    const dose = request.dosageInstruction?.[0]
+
+    const instructions = dose?.text ?? 'Unknown instructions'
+    const route = bestDisplayName(dose?.route) ?? 'Unknown route'
+    const strength = dose?.doseAndRate?.[0]?.doseQuantity?.value ?? 'Unknown strength'
+    const unit = dose?.doseAndRate?.[0]?.doseQuantity?.unit ?? 'Unknown unit'
+
+    return {
+        status: request.status ?? 'unknown',
+        authoredOn: request.authoredOn ?? 'Unknown authored date',
+        instructions: instructions,
+        route: route,
+        doseAndRate: `${strength} ${unit}`,
+    }
+}
+
+
+
+// ---- Assembly ----
+export function normalizeMedications(request: MedicationRequest): NormalizedMedication {
+    const dosage = resolveDosageInstructions(request)
+    const name = resolveMedicationName(request)
+
+    return {
+        name,
+        ...dosage
     }
 }
