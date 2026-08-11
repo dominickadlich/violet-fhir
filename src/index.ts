@@ -2,6 +2,7 @@ import { McpServer } from "@modelcontextprotocol/server";
 import { StdioServerTransport } from "@modelcontextprotocol/server/stdio";
 import { z } from "zod";
 import { fetchMedications, normalizeMedications } from "./fhir.js";
+import { error } from "node:console";
 
 
 // --- Create server instance ---
@@ -27,11 +28,11 @@ server.registerTool(
         return {
             content: [{
                 type: 'text',
-                text: result.bundle.entry?.map((m) => (
-                    normalizeMedications(m)
+                text: JSON.stringify(result.bundle.entry?.filter((m): m is { resource: fhir4.MedicationRequest } => m.resource !== undefined).map((m) => (
+                    normalizeMedications(m.resource))
                 ))
             }],
-            isError?: false
+            isError: false
         }
       case 'empty':
         return {
@@ -45,7 +46,7 @@ server.registerTool(
         return {
             content: [{
                 type: 'text',
-                text: result.status
+                text: result.detail
             }],
             isError: true
         }
@@ -53,10 +54,29 @@ server.registerTool(
         return {
             content: [{
                 type: 'text',
-                text: result.status
+                text: result.detail
+            }],
+            isError: true
+        }
+      default:
+        return {
+            content: [{
+                type: 'text',
+                text: 'Unknown response. Please try again later.'
             }],
             isError: true
         }
     }
   }
 );
+
+async function main() {
+  const transport = new StdioServerTransport();
+  await server.connect(transport);
+  console.error("Violet FHIR MCP Server running on stdio");
+}
+
+main().catch((error) => {
+  console.error("Fatal error in main():", error);
+  process.exit(1);
+});
