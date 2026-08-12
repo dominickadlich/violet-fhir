@@ -2,7 +2,6 @@ import { McpServer } from "@modelcontextprotocol/server";
 import { StdioServerTransport } from "@modelcontextprotocol/server/stdio";
 import { z } from "zod";
 import { fetchMedications, normalizeMedications } from "./fhir.js";
-import { error } from "node:console";
 
 
 // --- Create server instance ---
