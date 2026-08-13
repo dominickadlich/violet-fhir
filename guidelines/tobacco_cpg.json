@@ -1,0 +1,232 @@
+{
+  "guideline": "VA/DoD Tobacco Use Treatment CPG",
+  "version": "1.0",
+  "year": 2026,
+  "source": "Provider Summary",
+  "recommendations": [
+    {
+      "recNumber": 1,
+      "topic": "Treatment Engagement",
+      "text": "We suggest using motivational interviewing to increase engagement in treatment for tobacco and nicotine use.",
+      "strength": "Weak for",
+      "category": "Reviewed, New-added"
+    },
+    {
+      "recNumber": 2,
+      "topic": "Pharmacotherapy Interventions",
+      "text": "We recommend the use of FDA-approved pharmacotherapies (e.g., bupropion sustained release, nicotine replacement therapy [NRT], and varenicline) for increasing abstinence from combustible tobacco.",
+      "strength": "Strong for",
+      "category": "Reviewed, New-added"
+    },
+    {
+      "recNumber": 3,
+      "topic": "Pharmacotherapy Interventions",
+      "text": "For patients using nicotine replacement therapy (NRT), we recommend combination therapy (e.g., patch and short-acting NRT) over single NRT products for increasing abstinence from combustible tobacco.",
+      "strength": "Strong for",
+      "category": "Reviewed, New-added"
+    },
+    {
+      "recNumber": 4,
+      "topic": "Pharmacotherapy Interventions",
+      "text": "For patients receiving a single medication, we recommend varenicline over other monotherapies (e.g., bupropion sustained release; single-agent nicotine replacement therapy [NRT]) for increasing abstinence from combustible tobacco.",
+      "strength": "Strong for",
+      "category": "Reviewed, New-added"
+    },
+    {
+      "recNumber": 5,
+      "topic": "Pharmacotherapy Interventions",
+      "text": "In patients using bupropion sustained release, we suggest extending use beyond 12 weeks to maintain abstinence from combustible tobacco.",
+      "strength": "Weak for",
+      "category": "Reviewed, New-added"
+    },
+    {
+      "recNumber": 6,
+      "topic": "Pharmacotherapy Interventions",
+      "text": "There is insufficient evidence to recommend for or against the extended use of varenicline or nicotine replacement therapy beyond standard duration of therapy (12 weeks) to achieve abstinence from combustible tobacco.",
+      "strength": "Neither for nor against",
+      "category": "Reviewed, New-added"
+    },
+    {
+      "recNumber": 7,
+      "topic": "Pharmacotherapy Interventions",
+      "text": "We suggest using varenicline or nicotine replacement therapy (NRT) for increasing abstinence from electronic nicotine delivery systems (ENDS).",
+      "strength": "Weak for",
+      "category": "Reviewed, New-added"
+    },
+    {
+      "recNumber": 8,
+      "topic": "Pharmacotherapy Interventions",
+      "text": "We suggest using nicotine replacement therapy (NRT) for increasing abstinence from smokeless tobacco.",
+      "strength": "Weak for",
+      "category": "Reviewed, New-added"
+    },
+    {
+      "recNumber": 9,
+      "topic": "Pharmacotherapy Interventions",
+      "text": "We recommend using varenicline for increasing abstinence from smokeless tobacco.",
+      "strength": "Strong for",
+      "category": "Reviewed, New-added"
+    },
+    {
+      "recNumber": 10,
+      "topic": "Pharmacotherapy Interventions",
+      "text": "We suggest varenicline be started prior to surgery to assist patients in quitting tobacco use.",
+      "strength": "Weak for",
+      "category": "Reviewed, New-added"
+    },
+    {
+      "recNumber": 11,
+      "topic": "Pharmacotherapy Interventions",
+      "text": "There is insufficient evidence to recommend for or against the use of nicotine replacement therapy (NRT) or bupropion for tobacco cessation in the perioperative period.",
+      "strength": "Neither for nor against",
+      "category": "Reviewed, New-added"
+    },
+    {
+      "recNumber": 12,
+      "topic": "Alternate Tobacco Products",
+      "text": "We suggest against electronic nicotine delivery systems (ENDS) products for improving abstinence from tobacco and nicotine products. (ENDS is classified as a tobacco product and is not FDA approved for any use)",
+      "strength": "Weak against",
+      "category": "Reviewed, New-added"
+    },
+    {
+      "recNumber": 13,
+      "topic": "Behavioral Counseling Interventions",
+      "text": "We recommend more intensive behavioral counseling (at least four encounters) as compared to less intensive counseling to increase abstinence from tobacco and nicotine products.",
+      "strength": "Strong for",
+      "category": "Reviewed, New-added"
+    },
+    {
+      "recNumber": 14,
+      "topic": "Behavioral Counseling Interventions",
+      "text": "We suggest using text messaging (SMS) programs to increase abstinence from tobacco and nicotine products.",
+      "strength": "Weak for",
+      "category": "Reviewed, New-added"
+    },
+    {
+      "recNumber": 15,
+      "topic": "Behavioral Counseling Interventions",
+      "text": "There is insufficient evidence to recommend any specific behavioral counseling intervention over standard cognitive behavior therapy for tobacco cessation.",
+      "strength": "Neither for nor against",
+      "category": "Reviewed, New-added"
+    },
+    {
+      "recNumber": 16,
+      "topic": "Behavioral Counseling Interventions",
+      "text": "There is insufficient evidence to recommend for or against adding lifestyle interventions (e.g., diet, exercise) to behavioral counseling for tobacco cessation.",
+      "strength": "Neither for nor against",
+      "category": "Reviewed, New-added"
+    },
+    {
+      "recNumber": 17,
+      "topic": "Behavioral Counseling Interventions",
+      "text": "There is insufficient evidence to recommend either for or against smartphone apps for increasing abstinence from tobacco and nicotine products.",
+      "strength": "Neither for nor against",
+      "category": "Reviewed, New-added"
+    },
+    {
+      "recNumber": 18,
+      "topic": "Relapse",
+      "text": "If patients return to tobacco use, we suggest immediate repeat treatment with pharmacotherapy and counseling.",
+      "strength": "Weak for",
+      "category": "Reviewed, New-added"
+    },
+    {
+      "recNumber": 19,
+      "topic": "Not Ready to Quit Population",
+      "text": "In patients not ready to quit (e.g., in the next 30 days), we suggest nicotine replacement therapy (NRT) to increase quit attempts.",
+      "strength": "Weak for",
+      "category": "Reviewed, New-added"
+    },
+    {
+      "recNumber": 20,
+      "topic": "Not Ready to Quit Population",
+      "text": "In patients not ready to quit (e.g., in the next 30 days), we suggest varenicline to increase quit attempts and abstinence from tobacco and nicotine products.",
+      "strength": "Weak for",
+      "category": "Reviewed, New-added"
+    },
+    {
+      "recNumber": 21,
+      "topic": "Not Ready to Quit Population",
+      "text": "There is insufficient evidence to recommend either for or against medication sampling for increasing treatment engagement.",
+      "strength": "Neither for nor against",
+      "category": "Reviewed, New-added"
+    },
+    {
+      "recNumber": 22,
+      "topic": "Treatment Recommendations for Selected Subpopulations",
+      "text": "In patients with stable mental health conditions, we suggest treating tobacco use with pharmacotherapy.",
+      "strength": "Weak for",
+      "category": "Reviewed, New-added"
+    },
+    {
+      "recNumber": 23,
+      "topic": "Treatment Recommendations for Selected Subpopulations",
+      "text": "In patients with stable mental health conditions, we recommend varenicline over single agent nicotine replacement therapy (NRT) or bupropion sustained release to improve continuous abstinence.",
+      "strength": "Strong for",
+      "category": "Reviewed, New-added"
+    },
+    {
+      "recNumber": 24,
+      "topic": "Treatment Recommendations for Selected Subpopulations",
+      "text": "We suggest counseling be adapted to address both tobacco use and co-occurring serious mental illness (e.g., bipolar disorder, schizophrenia, other psychotic disorders).",
+      "strength": "Weak for",
+      "category": "Reviewed, New-added"
+    },
+    {
+      "recNumber": 25,
+      "topic": "Treatment Recommendations for Selected Subpopulations",
+      "text": "In patients being treated for alcohol use disorder/substance use disorder, we suggest concurrently treating tobacco use with behavioral counseling and pharmacotherapy.",
+      "strength": "Weak for",
+      "category": "Reviewed, New-added"
+    },
+    {
+      "recNumber": 26,
+      "topic": "Treatment Recommendations for Selected Subpopulations",
+      "text": "There is insufficient evidence to recommend for or against counseling that combines treatment for tobacco use and depression or post-traumatic stress disorder compared to standard tobacco cessation counseling.",
+      "strength": "Neither for nor against",
+      "category": "Reviewed, New-added"
+    },
+    {
+      "recNumber": 27,
+      "topic": "Treatment Recommendations for Selected Subpopulations",
+      "text": "There is insufficient evidence to recommend for or against the effectiveness of bupropion or nicotine replacement therapy for tobacco cessation during pregnancy.",
+      "strength": "Neither for nor against",
+      "category": "Reviewed, New-added"
+    },
+    {
+      "recNumber": 28,
+      "topic": "Complementary and Integrative Health Interventions",
+      "text": "As a standalone therapy, we suggest against acupuncture, mindfulness, or hypnotherapy for abstinence from tobacco and nicotine products.",
+      "strength": "Weak against",
+      "category": "Reviewed, New-added"
+    },
+    {
+      "recNumber": 29,
+      "topic": "Neurostimulation Interventions",
+      "text": "There is insufficient evidence to recommend either for or against repetitive transcranial magnetic stimulation, transcranial direct current stimulation, and intermittent theta burst stimulation for abstinence from tobacco and nicotine products, reduced use, or cravings.",
+      "strength": "Neither for nor against",
+      "category": "Reviewed, New-added"
+    },
+    {
+      "recNumber": 30,
+      "topic": "Interventions Implemented at System-level",
+      "text": "We recommend using proactive outreach to increase engagement in treatment for tobacco and nicotine use.",
+      "strength": "Strong for",
+      "category": "Reviewed, New-added"
+    },
+    {
+      "recNumber": 31,
+      "topic": "Interventions Implemented at System-level",
+      "text": "We suggest the use of contingency management or incentives in combination with behavioral counseling and pharmacotherapy for treating tobacco and nicotine use.",
+      "strength": "Weak for",
+      "category": "Reviewed, New-added"
+    },
+    {
+      "recNumber": 32,
+      "topic": "Interventions Implemented at System-level",
+      "text": "There is insufficient evidence to recommend either for or against the use of an opt-out approach to increase engagement in treatment for tobacco and nicotine use.",
+      "strength": "Neither for nor against",
+      "category": "Reviewed, New-added"
+    }
+  ]
+}
